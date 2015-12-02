@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2014, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2015, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1563,11 +1563,16 @@ static void _kgsl_cmdbatch_timer(unsigned long data)
 	struct kgsl_device *device;
 	struct kgsl_cmdbatch *cmdbatch = (struct kgsl_cmdbatch *) data;
 	struct kgsl_cmdbatch_sync_event *event;
+	struct adreno_context *drawctxt;
 
 	if (cmdbatch == NULL || cmdbatch->context == NULL)
 		return;
 
+	drawctxt = ADRENO_CONTEXT(cmdbatch->context);
 	/* We are in timer context, this can be non-bh */
+	spin_lock(&drawctxt->lock);
+	set_bit(ADRENO_CONTEXT_CMDBATCH_FLAG_FENCE_LOG,
+			&drawctxt->flags);
 	spin_lock(&cmdbatch->lock);
 	if (list_empty(&cmdbatch->synclist))
 		goto done;
@@ -1609,6 +1614,10 @@ static void _kgsl_cmdbatch_timer(unsigned long data)
 
 done:
 	spin_unlock(&cmdbatch->lock);
+	clear_bit(ADRENO_CONTEXT_CMDBATCH_FLAG_FENCE_LOG,
+		&drawctxt->flags);
+	spin_unlock(&drawctxt->lock);
+
 }
 
 /**
@@ -4377,6 +4386,18 @@ static int kgsl_mmap(struct file *file, struct vm_area_struct *vma)
 
 	vma->vm_private_data = entry;
 
+#ifdef CONFIG_TIMA_RKP
+        if (vma->vm_end - vma->vm_start) {
+                /* iommu optimization- needs to be turned ON from
+                * the tz side.
+                */
+                cpu_v7_tima_iommu_opt(vma->vm_start, vma->vm_end, (unsigned long)__pa((unsigned long)vma->vm_mm->pgd));
+                __asm__ __volatile__ (
+                "mcr    p15, 0, r0, c8, c3, 0\n"
+                "dsb\n"
+                "isb\n");
+        }
+#endif
 	/* Determine user-side caching policy */
 
 	cache = kgsl_memdesc_get_cachemode(&entry->memdesc);

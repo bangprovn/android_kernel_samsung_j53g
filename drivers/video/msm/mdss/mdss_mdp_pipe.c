@@ -1320,8 +1320,15 @@ static int mdss_mdp_image_setup(struct mdss_mdp_pipe *pipe,
 
 	if (data != NULL) {
 		ret = mdss_mdp_data_check(data, &pipe->src_planes);
-		if (ret)
+		if (ret) {
+			pr_err("ctl: %d pnum=%d wh=%dx%d src={%d,%d,%d,%d} dst={%d,%d,%d,%d}\n",
+			pipe->mixer_left->ctl->num, pipe->num,
+			pipe->img_width, pipe->img_height,
+			pipe->src.x, pipe->src.y, pipe->src.w, pipe->src.h,
+			pipe->dst.x, pipe->dst.y, pipe->dst.w, pipe->dst.h);
+			pr_err("Format: pipe->src_fmt->format = %d\n", pipe->src_fmt->format);
 			return ret;
+		}
 	}
 
 	if ((pipe->flags & MDP_DEINTERLACE) &&

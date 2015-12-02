@@ -331,7 +331,16 @@ static void compr_event_handler(uint32_t opcode,
 			       payload[3],
 			       payload[0],
 				prtd->byte_offset, prtd->copied_total, token);
-			atomic_set(&prtd->start, 0);
+
+			if (atomic_read(&prtd->drain) && prtd->last_buffer) {
+				pr_debug("wake up on drain\n");
+				prtd->drain_ready = 1;
+				wake_up(&prtd->drain_wait);
+				atomic_set(&prtd->drain, 0);
+				prtd->last_buffer = 0;
+			} else {
+				atomic_set(&prtd->start, 0);
+			}
 		} else {
 			pr_debug("ASM_DATA_EVENT_WRITE_DONE_V2 offset %d, length %d\n",
 				 prtd->byte_offset, token);
@@ -735,6 +744,7 @@ static int msm_compr_configure_dsp(struct snd_compr_stream *cstream)
 	int dir = IN, ret = 0;
 	struct audio_client *ac = prtd->audio_client;
 	uint32_t stream_index;
+
 	struct asm_softpause_params softpause = {
 		.enable = SOFT_PAUSE_ENABLE,
 		.period = SOFT_PAUSE_PERIOD,
@@ -1692,6 +1702,7 @@ static int msm_compr_pointer(struct snd_compr_stream *cstream,
 	uint64_t timestamp = 0;
 	int rc = 0, first_buffer;
 	unsigned long flags;
+	uint32_t gapless_transition;
 
 	pr_debug("%s\n", __func__);
 	memset(&tstamp, 0x0, sizeof(struct snd_compr_tstamp));
@@ -1710,13 +1721,17 @@ static int msm_compr_pointer(struct snd_compr_stream *cstream,
 		return -ENETRESET;
 	}
 
+	gapless_transition = prtd->gapless_state.gapless_transition;
 	spin_unlock_irqrestore(&prtd->lock, flags);
 
 	/*
 	 Query timestamp from DSP if some data is with it.
 	 This prevents timeouts.
 	*/
-	if (!first_buffer) {
+	if (!first_buffer || gapless_transition) {
+		if (gapless_transition)
+			pr_debug("%s session time in gapless transition", __func__);
+
 		rc = q6asm_get_session_time(prtd->audio_client, &timestamp);
 		if (rc < 0) {
 			pr_err("%s: Get Session Time return value =%lld\n",

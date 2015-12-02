@@ -363,6 +363,11 @@ static void show_data(unsigned long addr, int nbytes, const char *name)
 
 static void show_extra_register_data(struct pt_regs *regs, int nbytes)
 {
+	mm_segment_t fs;
+
+	fs = get_fs();
+	set_fs(KERNEL_DS);
+
 	show_data(regs->ARM_pc - nbytes, nbytes * 2, "PC");
 	show_data(regs->ARM_lr - nbytes, nbytes * 2, "LR");
 	show_data(regs->ARM_sp - nbytes, nbytes * 2, "SP");
@@ -379,6 +384,8 @@ static void show_extra_register_data(struct pt_regs *regs, int nbytes)
 	show_data(regs->ARM_r8 - nbytes, nbytes * 2, "R8");
 	show_data(regs->ARM_r9 - nbytes, nbytes * 2, "R9");
 	show_data(regs->ARM_r10 - nbytes, nbytes * 2, "R10");
+
+	set_fs(fs);
 }
 
 void __show_regs(struct pt_regs *regs)
@@ -437,7 +444,6 @@ void __show_regs(struct pt_regs *regs)
 		printk("Control: %08x%s\n", ctrl, buf);
 	}
 #endif
-	if (get_fs() == get_ds())
 		show_extra_register_data(regs, 128);
 }
 
