@@ -1770,7 +1770,6 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 			if (policy->min >= tunables->lpm_disable_freq)
 				lpm_set_mode(cpu_mask, power_level_mask, 0);
 #endif
-		}
 		for_each_cpu(j, policy->cpus) {
 			pcpu = &per_cpu(cpuinfo, j);
 
