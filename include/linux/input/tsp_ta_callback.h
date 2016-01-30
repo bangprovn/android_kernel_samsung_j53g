@@ -8,10 +8,11 @@
 #else
 
 /* Model define */
+
 #if defined(CONFIG_SEC_GRANDMAX_PROJECT) || defined(CONFIG_SEC_FORTUNA_PROJECT) || defined(CONFIG_SEC_A7_PROJECT)
 #define USE_TSP_TA_CALLBACKS
 
-#elif defined(CONFIG_SEC_E5_PROJECT) || defined(CONFIG_SEC_GTEL_PROJECT)
+#elif defined(CONFIG_SEC_E5_PROJECT) || defined(CONFIG_SEC_GTEL_PROJECT) || defined(CONFIG_SEC_J5_PROJECT)
 #define USE_TSP_TA_CALLBACKS
 
 #elif defined(CONFIG_SEC_A3_PROJECT)

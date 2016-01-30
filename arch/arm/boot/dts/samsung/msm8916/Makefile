@@ -159,6 +159,32 @@ ifeq ($(CONFIG_SEC_E5_PROJECT),y)
 	endif
 endif
 
+ifeq ($(CONFIG_SEC_J5_PROJECT),y)
+	ifeq ($(CONFIG_MACH_J5LTE_EUR_OPEN),y)
+		dtb-y += msm8916-sec-j5lte-eur-r00.dtb
+		dtb-y += msm8916-sec-j5lte-eur-r01.dtb
+		dtb-y += msm8916-sec-j5lte-eur-r05.dtb
+	else ifeq ($(CONFIG_MACH_J53G_EUR_OPEN),y)
+		dtb-y += msm8916-sec-j53g-eur-r00.dtb
+		dtb-y += msm8916-sec-j53g-eur-r01.dtb
+		dtb-y += msm8916-sec-j53g-eur-r02.dtb
+		dtb-y += msm8916-sec-j53g-eur-r05.dtb
+	else ifeq ($(CONFIG_MACH_J5LTE_CHN_CMCC),y)
+		dtb-y += msm8916-sec-j5lte-chn-r00.dtb
+		dtb-y += msm8916-sec-j5lte-chn-r01.dtb
+	else ifeq ($(CONFIG_MACH_J5LTE_KOR_OPEN),y)
+		dtb-y += msm8916-sec-j5lte-kor-r01.dtb
+		dtb-y += msm8916-sec-j5lte-kor-r05.dtb
+	else ifeq ($(CONFIG_MACH_J5LTE_LTN_DTV),y)
+		dtb-y += msm8916-sec-j5lte-ltn-dtv-r04.dtb
+		dtb-y += msm8916-sec-j5lte-ltn-dtv-r05.dtb
+	else ifeq ($(CONFIG_MACH_J5YLTE_SEA_NZC),y)
+		dtb-y += msm8916-sec-j5ylte-sea-r00.dtb
+		dtb-y += msm8916-sec-j5ylte-sea-r01.dtb
+		dtb-y += msm8916-sec-j5ylte-sea-r05.dtb
+	endif
+endif
+
 ifeq ($(CONFIG_SEC_A3_PROJECT),y)
 	ifeq ($(CONFIG_MACH_A3U_EUR_OPEN),y)
 		dtb-y += msm8916-sec-a3u-eur-r01.dtb

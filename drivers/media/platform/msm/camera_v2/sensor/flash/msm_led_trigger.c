@@ -31,6 +31,14 @@
 
 #define FLASH_NAME "camera-led-flash"
 
+#if defined(CONFIG_FLED_LM3632)
+extern void ssflash_led_turn_on(void);
+extern void ssflash_led_turn_off(void);
+#endif
+#if defined(CONFIG_FLED_KTD2692)
+extern void ktd2692_flash_on(unsigned data);
+#endif
+
 /*#define CONFIG_MSMB_CAMERA_DEBUG*/
 #undef CDBG
 #ifdef CONFIG_MSMB_CAMERA_DEBUG
@@ -101,6 +109,15 @@ static int32_t msm_led_trigger_config(struct msm_led_flash_ctrl_t *fctrl,
 	switch (cfg->cfgtype) {
 	case MSM_CAMERA_LED_OFF:
 		pr_err("MSM_CAMERA_LED_OFF\n");
+#if defined(CONFIG_FLED_LM3632) || defined(CONFIG_FLED_KTD2692)
+		if(system_rev < 5){
+			CDBG("ssflaash led turn on msm_led_trigger\n");
+			ssflash_led_turn_off();
+		}else{
+			ktd2692_flash_on(0);
+			CDBG("Ktd2692 led turn on msm_led_trigger\n");
+		}
+#endif
 #ifdef CONFIG_LEDS_S2MU003
                 if (assistive_light == true) {
                         CDBG("When assistive light, Not control flash\n");
@@ -160,6 +177,16 @@ static int32_t msm_led_trigger_config(struct msm_led_flash_ctrl_t *fctrl,
 
 	case MSM_CAMERA_LED_LOW:
 		pr_err("MSM_CAMERA_LED_LOW\n");
+#if defined(CONFIG_FLED_LM3632) || defined(CONFIG_FLED_KTD2692)
+		if (cfg->torch_current == FRONT_CAMERA_B) {
+			if(system_rev < 5){
+				ssflash_led_turn_on();
+			}else{
+				ktd2692_flash_on(1);
+			}
+			break;
+		}
+#endif
 #ifdef CONFIG_LEDS_S2MU003
                 if (assistive_light == true) {
                         CDBG("When assistive light, Not control flash\n");

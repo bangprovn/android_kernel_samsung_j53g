@@ -693,6 +693,42 @@ unsigned int sm5703_get_soc(struct i2c_client *client)
 		soc = ((ret&0xff00)>>8) * 10; //integer bit;
 		soc = soc + (((ret&0x00ff)*10)/256); // integer + fractional bit
 	}
+#if (defined(CONFIG_SEC_J5_PROJECT) || defined(CONFIG_SEC_J5N_PROJECT)) && !defined(CONFIG_MACH_J5LTE_CHN_CMCC)  /* only for J5 LDO1 noise */
+	// for charger setting
+	if(fuelgauge->is_charging) //During charging
+	{
+		if (fuelgauge->info.batt_ocv >= 4200)
+		{
+			value.intval = 0;
+			psy_do_property("sm5703-charger", set,
+					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX, value);
+		}
+		else if (fuelgauge->info.batt_ocv >= 4100)
+		{
+			value.intval = 1;
+			psy_do_property("sm5703-charger", set,
+					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX, value);
+		}
+		else if (fuelgauge->info.batt_ocv >= 4080)
+		{
+			value.intval = 2;
+			psy_do_property("sm5703-charger", set,
+					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX, value);
+		}
+		else if (fuelgauge->info.batt_ocv >= 4000)
+		{
+			value.intval = 3;
+			psy_do_property("sm5703-charger", set,
+					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX, value);
+		}
+		else if (fuelgauge->info.batt_ocv >= 3980)
+		{
+			value.intval = 4;
+			psy_do_property("sm5703-charger", set,
+					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX, value);
+		}
+	}
+#endif
 
 	dev_info(&client->dev, "%s: read = 0x%x, soc = %d\n", __func__, ret, soc);
 	fuelgauge->info.batt_soc = soc;
