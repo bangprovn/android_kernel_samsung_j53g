@@ -36,6 +36,7 @@ extern void ssflash_led_turn_off(void);
 extern void ktd2692_flash_on(unsigned data);
 #endif
 
+extern unsigned int system_rev;
 
 #if defined(CONFIG_FLED_LM3632) || defined(CONFIG_FLED_KTD2692)
 int32_t msm_sensor_flash_native_control(struct msm_sensor_ctrl_t *s_ctrl,
@@ -565,7 +566,7 @@ int msm_sensor_match_id(struct msm_sensor_ctrl_t *s_ctrl)
 			__func__, __LINE__, s_ctrl);
 		return -EINVAL;
 	}
-	csensor_i2c_client = s_ctrl->sensor_i2c_client;
+	sensor_i2c_client = s_ctrl->sensor_i2c_client;
 	slave_info = s_ctrl->sensordata->slave_info;
 	sensor_name = s_ctrl->sensordata->sensor_name;
 

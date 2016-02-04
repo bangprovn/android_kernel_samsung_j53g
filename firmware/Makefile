@@ -32,8 +32,8 @@ fw-shipped-$(CONFIG_TOUCHSCREEN_IST30XXC) += tsp_imagis/ist3038c_j5_cmcs.bin
 fw-shipped-$(CONFIG_TOUCHSCREEN_IST30XXC) += tsp_imagis/ist3038c_j5_100ohm.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_IST30XXC) += tsp_imagis/ist3038c_j5_octa.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_IST30XXC) += tsp_imagis/ist3038c_j5_octa_cmcs.bin
-fw-shipped-$(CONFIG_KEYBOARD_TC360_TOUCHKEY) += coreriver/tc360_j5.fw
-fw-shipped-$(CONFIG_KEYBOARD_TC360_TOUCHKEY) += coreriver/tc360_j5_dtv.fw
+fw-shipped-$(CONFIG_KEYBOARD_TC360_TKEY) += coreriver/tc360_j5.fw
+fw-shipped-$(CONFIG_KEYBOARD_TC360_TKEY) += coreriver/tc360_j5_dtv.fw
 endif
 fw-shipped-$(CONFIG_ACENIC) += $(acenic-objs)
 fw-shipped-$(CONFIG_ADAPTEC_STARFIRE) += adaptec/starfire_rx.bin \
@@ -143,13 +143,11 @@ fw-shipped-$(CONFIG_USB_SERIAL_KEYSPAN_PDA) += keyspan_pda/keyspan_pda.fw
 fw-shipped-$(CONFIG_USB_SERIAL_XIRCOM) += keyspan_pda/xircom_pgs.fw
 fw-shipped-$(CONFIG_USB_VICAM) += vicam/firmware.fw
 fw-shipped-$(CONFIG_VIDEO_CPIA2) += cpia2/stv0672_vp4.bin
-fw-shipped-$(CONFIG_KEYBOARD_TC360_TOUCHKEY) += coreriver/tc360.fw
 fw-shipped-$(CONFIG_YAM) += yam/1200.bin yam/9600.bin
 
 fw-shipped-$(CONFIG_TOUCHSCREEN_MMS300) += tsp_melfas/mms345l_e5.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_MMS300_A) += tsp_melfas/mms345l_a5.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_MELFAS_MMS449) += tsp_melfas/mms449_k5.fw tsp_melfas/mms449_a8.fw
-fw-shipped-$(CONFIG_KEYBOARD_TC360_TKEY) += tkey/tc360_e5.fw tkey/tc360_e7.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_ATMEL_MXT1664T) += tsp_atmel/mxtt_klimt.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_ATMEL_MXT1664T) += tsp_atmel/mxtt_gt510lte.fw
 fw-shipped-$(CONFIG_TOUCHSCREEN_ATMEL_MXT1664T) += tsp_atmel/mxtt_gt5note10.fw

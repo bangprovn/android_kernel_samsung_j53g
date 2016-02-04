@@ -134,7 +134,7 @@ struct input_booster_data {
 struct input_booster *input_booster_allocate(int id);
 void input_booster_free(struct input_booster *booster);
 void input_booster_get_default_setting(const char *flag, struct dvfs *value);
-void input_booster_set_level_change(int val);
+int input_booster_set_level_change(int val);
 
 #ifdef CONFIG_DEBUG_BUS_VOTER
 extern int msm_bus_floor_vote(const char *name, u64 floor_hz);

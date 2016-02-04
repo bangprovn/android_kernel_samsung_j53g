@@ -857,6 +857,7 @@ static void sm5703_configure_charger(struct sm5703_charger_data *charger)
 		queue_delayed_work_on(0, charger->wq, &charger->aicl_work, msecs_to_jiffies(50));
 	}
 }
+#endif
 
 int sm5703_chg_fled_init(struct i2c_client *client)
 {

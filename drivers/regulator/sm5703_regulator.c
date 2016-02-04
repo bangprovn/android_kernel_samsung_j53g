@@ -409,6 +409,7 @@ static int sm5703_regulator_disable(struct regulator_dev *rdev)
 
 	return ret;
 }
+#endif
 
 static int sm5703_regulator_is_enabled(struct regulator_dev *rdev)
 {

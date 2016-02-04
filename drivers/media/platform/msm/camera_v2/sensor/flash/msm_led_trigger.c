@@ -39,6 +39,8 @@ extern void ssflash_led_turn_off(void);
 extern void ktd2692_flash_on(unsigned data);
 #endif
 
+extern int system_rev;
+
 /*#define CONFIG_MSMB_CAMERA_DEBUG*/
 #undef CDBG
 #ifdef CONFIG_MSMB_CAMERA_DEBUG

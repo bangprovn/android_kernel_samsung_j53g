@@ -196,6 +196,13 @@ extern int curve_2p12_300[GAMMA_INDEX_MAX];
 
 /*
 *		index : 0 ~ 255
+*		360 is max CANDELA
+*		(360*((index/255)^2.0))*4194304
+*/
+extern int curve_2p0_360[GAMMA_INDEX_MAX];
+
+/*
+*		index : 0 ~ 255
 *		350 is max CANDELA
 *		(350*((index/255)^1.9))*4194304
 */
